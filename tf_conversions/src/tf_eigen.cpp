@@ -86,46 +86,66 @@ namespace tf {
     {
       for(int i=0; i<3; i++)
       {
-        e.matrix()(i,3) = t.getOrigin()[i];
+        e(i,3) = t.getOrigin()[i];
         for(int j=0; j<3; j++)
         {
-          e.matrix()(i,j) = t.getBasis()[i][j];
+          e(i,j) = t.getBasis()[i][j];
         }
       }
       // Fill in identity in last row
       for (int col = 0 ; col < 3; col ++)
-        e.matrix()(3, col) = 0;
-      e.matrix()(3,3) = 1;
+        e(3, col) = 0;
+      e(3,3) = 1;
     }
 
     template<typename T>
     void transformEigenToTFImpl(const T &e, tf::Transform &t)
     {
-      t.setOrigin(tf::Vector3( e.matrix()(0,3), e.matrix()(1,3), e.matrix()(2,3)));
-      t.setBasis(tf::Matrix3x3(e.matrix()(0,0), e.matrix()(0,1), e.matrix()(0,2),
-                               e.matrix()(1,0), e.matrix()(1,1), e.matrix()(1,2),
-                               e.matrix()(2,0), e.matrix()(2,1), e.matrix()(2,2)));
+      t.setOrigin(tf::Vector3( e(0,3), e(1,3), e(2,3)));
+      t.setBasis(tf::Matrix3x3(e(0,0), e(0,1), e(0,2),
+                               e(1,0), e(1,1), e(1,2),
+                               e(2,0), e(2,1), e(2,2)));
     }
   }
+  
+  void transformTFToEigen(const tf::Transform &t, Eigen::Matrix4d &e)
+  {
+      transformTFToEigenImpl(t, e);
+  };
+  
+  void transformTFToEigen(const tf::Transform &t, Eigen::Matrix4f &e)
+  {
+      transformTFToEigenImpl(t, e);
+  };
 
   void transformTFToEigen(const tf::Transform &t, Eigen::Affine3d &e)
   {
-    transformTFToEigenImpl(t, e);
+    transformTFToEigenImpl(t, e.matrix());
   };
 
   void transformTFToEigen(const tf::Transform &t, Eigen::Isometry3d &e)
   {
-    transformTFToEigenImpl(t, e);
+    transformTFToEigenImpl(t, e.matrix());
   };
+  
+  void transformEigenToTF(const Eigen::Matrix4f &e, tf::Transform &t)
+  {
+      transformEigenToTFImpl(e, t);
+  }
+  
+  void transformEigenToTF(const Eigen::Matrix4d &e, tf::Transform &t)
+  {
+      transformEigenToTFImpl(e, t);
+  }
 
   void transformEigenToTF(const Eigen::Affine3d &e, tf::Transform &t)
   {
-    transformEigenToTFImpl(e, t);
+    transformEigenToTFImpl(e.matrix(), t);
   }
 
   void transformEigenToTF(const Eigen::Isometry3d &e, tf::Transform &t)
   {
-    transformEigenToTFImpl(e, t);
+    transformEigenToTFImpl(e.matrix(), t);
   }
 
   void vectorTFToEigen(const tf::Vector3& t, Eigen::Vector3d& e)

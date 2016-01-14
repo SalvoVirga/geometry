@@ -62,11 +62,23 @@ void quaternionTFToEigen(const tf::Quaternion &t, Eigen::Quaterniond &e);
 /// Converts an Eigen Quaternion into a tf Quaternion
 void quaternionEigenToTF(const Eigen::Quaterniond &e, tf::Quaternion &t);
 
+// Converts a tf Transform into an Eigen Matrix4d
+void transformTFToEigen(const tf::Transform &t, Eigen::Matrix4d &e);
+
+// Converts a tf Transform into an Eigen Matrix4f
+void transformTFToEigen(const tf::Transform &t, Eigen::Matrix4f &e);
+
 /// Converts a tf Transform into an Eigen Affine3d
 void transformTFToEigen(const tf::Transform &t, Eigen::Affine3d &e);
 
 /// Converts a tf Transform into an Eigen Isometry3d
 void transformTFToEigen(const tf::Transform &t, Eigen::Isometry3d &e);
+
+/// Converts an Eigen Matrix4f into a tf Transform
+void transformEigenToTF(const Eigen::Matrix4f &e, tf::Transform &t);
+
+/// Converts an Eigen Matrix4d into a tf Transform
+void transformEigenToTF(const Eigen::Matrix4d &e, tf::Transform &t);
 
 /// Converts an Eigen Affine3d into a tf Transform
 void transformEigenToTF(const Eigen::Affine3d &e, tf::Transform &t);
